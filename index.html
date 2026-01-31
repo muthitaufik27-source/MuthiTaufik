@@ -1,36 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page WebGIS Sistem Informasi Pertanahan</title>
+    <title>WebGIS Balikpapan - Muthi Taufik</title>
     
     <link rel="stylesheet" href="styles.css">
     
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
     <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
     <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
 </head>
 <body>
+
     <header id="navbar">
         <div class="container nav-container">
             <div class="logo">
-                <img src="asset/Logo_unjani.png" alt="Logo" width="80">
+                <img src="asset/logo_unjani.png" alt="Logo UNJANI" width="60">
                 <h1>WebGIS Pertanahan</h1>
             </div>
             <nav>
                 <ul>
                     <li><a href="#hero-section">Home</a></li>
-                    <li><a href="#map-section">Map</a></li>
+                    <li><a href="#map-section">Peta</a></li>
                     <li><a href="#data-section">Data</a></li>
                     <li><a href="#author-section">Author</a></li>
                 </ul>
@@ -40,82 +40,56 @@
 
     <div id="hero-section" class="hero-section">
         <div class="hero-content">
-            <h1>WebGIS Sistem Informasi Pertanahan UNJANI</h1>
-            <p>Halaman untuk Melakukan Eksplorasi Basis Data Pertanahan</p>
+            <h1>Sistem Informasi Pertanahan</h1>
+            <p>Studi Kasus: Kota Balikpapan</p>
+            <a href="#map-section" style="display:inline-block; margin-top:15px; padding:10px 20px; background:orange; color:white; text-decoration:none; border-radius:5px;">Mulai Eksplorasi</a>
         </div>
     </div>
 
     <div id="map-section">
-        <h2>Jelajahi WebGIS Sistem Informasi Pertanahan</h2>
+        <h2>Peta Persebaran Data</h2>
         <div id="map"></div>
     </div>
 
     <div id="data-section">
-        <h2>Data Tersedia</h2>
+        <h2>Informasi Data Spasial</h2>
         <div class="container data-grid">
             
             <div class="column">
                 <div class="data-item">
-                    <img src="https://placehold.co/600x400/png?text=Peta+Jalan+Utama" alt="Peta Jalan Utama">
+                    <img src="https://placehold.co/600x400/png?text=Jalan+Arteri" alt="Jalan Arteri">
                     <div class="description">
-                        <h3>1. Jaringan Jalan Arteri</h3>
-                        <p>Data vektor garis yang merepresentasikan jaringan jalan utama (Arteri Primer).</p>
-                        <hr>
-                        <p><strong>Lokasi:</strong> Pusat Kota Bengkulu</p>
-                        <p><strong>Koordinat:</strong> -3.80044, 102.26554</p>
-                        <p><strong>Format:</strong> GeoJSON / SHP</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="column">
-                <div class="data-item">
-                    <img src="https://placehold.co/600x400/png?text=Persil+Bangunan" alt="Persil Bangunan">
-                    <div class="description">
-                        <h3>2. Persil Permukiman Warga</h3>
-                        <p>Data poligon batas bidang tanah (persil) area perumahan padat penduduk.</p>
-                        <hr>
-                        <p><strong>Lokasi:</strong> Kec. Ratu Samban</p>
-                        <p><strong>Format:</strong> GeoJSON</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="column">
-                <div class="data-item">
-                    <img src="https://placehold.co/600x400/png?text=Jalan+Lingkungan" alt="Jalan Lingkungan">
-                    <div class="description">
-                        <h3>3. Jaringan Jalan Lingkungan</h3>
-                        <p>Peta jaringan jalan lingkungan dan gang-gang kecil.</p>
-                        <hr>
-                        <p><strong>Lokasi:</strong> Kel. Anggut Atas</p>
-                        <p><strong>Format:</strong> GeoJSON</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="column">
-                <div class="data-item">
-                    <img src="https://placehold.co/600x400/png?text=Kawasan+Perkantoran" alt="Perkantoran">
-                    <div class="description">
-                        <h3>4. Persil Kawasan Perkantoran</h3>
-                        <p>Data spasial area perkantoran pemerintah dan swasta (KDB & RTRW).</p>
+                        <h3>1. Jalan Arteri</h3>
+                        <p>Jaringan jalan utama di pusat kota Balikpapan.</p>
                         <hr>
                         <p><strong>Lokasi:</strong> Jl. Jend. Sudirman</p>
-                        <p><strong>Format:</strong> GeoJSON</p>
+                        <p><strong>Format:</strong> GeoJSON (LineString)</p>
                     </div>
                 </div>
             </div>
 
             <div class="column">
                 <div class="data-item">
-                    <img src="https://placehold.co/600x400/png?text=Integrasi+Data" alt="Peta Integrasi">
+                    <img src="https://placehold.co/600x400/png?text=Persil+Warga" alt="Persil">
                     <div class="description">
-                        <h3>5. Integrasi Jalan & Persil</h3>
-                        <p>Visualisasi gabungan (overlay) antara jalan dan batas persil.</p>
+                        <h3>2. Persil Warga</h3>
+                        <p>Data bidang tanah kepemilikan warga (SHM).</p>
                         <hr>
-                        <p><strong>Lokasi:</strong> Area Studi Keseluruhan</p>
-                        <p><strong>Format:</strong> Web Map Service</p>
+                        <p><strong>Lokasi:</strong> Area Pemukiman</p>
+                        <p><strong>Format:</strong> GeoJSON (Polygon)</p>
+                    </div>
+                </div>
+            </div>
+
+             <div class="column">
+                <div class="data-item">
+                    <img src="https://placehold.co/600x400/png?text=Fasilitas+Publik" alt="Faskes">
+                    <div class="description">
+                        <h3>3. Fasilitas Publik</h3>
+                        <p>Lokasi Puskesmas dan Kantor Pemerintahan.</p>
+                        <hr>
+                        <p><strong>Lokasi:</strong> Tersebar</p>
+                        <p><strong>Format:</strong> GeoJSON (Point)</p>
                     </div>
                 </div>
             </div>
@@ -126,19 +100,18 @@
     <div id="author-section">
         <div class="author-content">
             <h2>Tentang Pembuat</h2>
-            <img src="asset/Foto.png" alt="Profile Picture" class="profile-picture">
+            <img src="asset/foto.png" alt="Muthi Taufik" class="profile-picture">
             <div class="author-name">
                 <h3>Muthi Taufik</h3>
             </div>
-            <p>Tugas Dan UAS Sistem Informasi Pertanahan</p>
+            <p>NIM: 2350241009</p>
+            <p>Teknologi Sains Data - UNJANI</p>
         </div>
     </div>
 
     <footer id="footer">
         <div class="footer-content">
-            <h3>UNJANI ANGKATAN 2023</h3>
-            <p>Nama Lengkap:Muthi Taufik</p>
-            <p>NIM: 2350241009</p>
+            <p>&copy; 2024 WebGIS Pertanahan. All Rights Reserved.</p>
         </div>
     </footer>
 
