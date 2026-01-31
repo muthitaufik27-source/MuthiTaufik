@@ -1,4 +1,4 @@
-// --- 1. INISIALISASI PETA (Fokus Balikpapan) ---
+// --- 1. INISIALISASI PETA (BALIKPAPAN) ---
 const map = L.map('map').setView([-1.265386, 116.831200], 15);
 
 // --- 2. BASEMAPS ---
@@ -13,38 +13,43 @@ const baseMapGoogle = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&
     attribution: 'Google Satellite'
 });
 
-// --- 3. DEFINISI LAYER GROUP (Wadah Data) ---
+// --- 3. STYLE & LAYER DEFINITION ---
+
+// Style Jalan Arteri (Merah)
 const jalanArteriLayer = L.geoJSON(null, {
-    style: { color: "#e74c3c", weight: 4, opacity: 1 }, // Merah Tebal
+    style: { color: "#e74c3c", weight: 5, opacity: 1 },
     onEachFeature: function(feature, layer) {
-        layer.bindPopup(`<b>Jalan Arteri</b><br>${feature.properties.NAMA_JALAN}`);
+        layer.bindPopup(`<b>Jalan Arteri</b><br>${feature.properties.NAMA_JALAN || 'Tanpa Nama'}`);
     }
 });
 
+// Style Jalan Lingkungan (Biru Putus-putus)
 const jalanLingkunganLayer = L.geoJSON(null, {
-    style: { color: "#3498db", weight: 2, dashArray: '5, 5', opacity: 1 }, // Biru Putus-putus
+    style: { color: "#3498db", weight: 3, dashArray: '5, 5', opacity: 1 },
     onEachFeature: function(feature, layer) {
-        layer.bindPopup(`<b>Jalan Lingkungan</b><br>${feature.properties.NAMA_JALAN}`);
+        layer.bindPopup(`<b>Jalan Lingkungan</b><br>${feature.properties.NAMA_JALAN || 'Tanpa Nama'}`);
     }
 });
 
+// Style Persil Warga (Kuning Transparan)
 const persilWargaLayer = L.geoJSON(null, {
-    style: { fillColor: "#f1c40f", color: "#333", weight: 1, fillOpacity: 0.6 }, // Kuning
+    style: { fillColor: "#f1c40f", color: "#333", weight: 1, fillOpacity: 0.5 },
     onEachFeature: function(feature, layer) {
-        layer.bindPopup(`
-            <b>Pemilik:</b> ${feature.properties.PEMILIK}<br>
-            <b>Luas:</b> ${feature.properties.LUAS}<br>
-            <b>Status:</b> ${feature.properties.STATUS}
-        `);
+        let content = `
+            <b>Pemilik:</b> ${feature.properties.PEMILIK || '-'}<br>
+            <b>Luas:</b> ${feature.properties.LUAS || '-'}<br>
+            <b>Status:</b> ${feature.properties.STATUS || '-'}
+        `;
+        layer.bindPopup(content);
     }
 });
 
+// Style Puskesmas (Lingkaran Merah)
 const puskesmasLayer = L.geoJSON(null, {
     pointToLayer: function(feature, latlng) {
-        // Menggunakan CircleMarker Merah untuk Puskesmas
         return L.circleMarker(latlng, {
             radius: 8,
-            fillColor: "#ff0000",
+            fillColor: "red",
             color: "#fff",
             weight: 1,
             opacity: 1,
@@ -52,84 +57,65 @@ const puskesmasLayer = L.geoJSON(null, {
         });
     },
     onEachFeature: function(feature, layer) {
-        layer.bindPopup(`<b>Faskes:</b> ${feature.properties.NAMA_FASKES}<br>${feature.properties.ALAMAT}`);
+        layer.bindPopup(`<b>PUSKESMAS</b><br>${feature.properties.NAMA_FASKES}`);
     }
 });
 
+// Style Pemerintahan (Marker Biru Default)
 const pemerintahanLayer = L.geoJSON(null, {
-    pointToLayer: function(feature, latlng) {
-        // Menggunakan Marker Standar (Biru) untuk Kantor
-        return L.marker(latlng); 
-    },
     onEachFeature: function(feature, layer) {
-        layer.bindPopup(`<b>Kantor:</b> ${feature.properties.NAMA_KANTOR}<br>${feature.properties.INSTANSI}`);
+        layer.bindPopup(`<b>KANTOR</b><br>${feature.properties.NAMA_KANTOR}`);
     }
 });
 
-// --- 4. MEMUAT DATA DARI FILE GEOJSON ---
 
-// 1. Load Jalan Arteri
-$.getJSON("asset/Jalan_Arteri.geojson", function(data) {
-    jalanArteriLayer.addData(data);
-    jalanArteriLayer.addTo(map); // Tampilkan default
-});
+// --- 4. LOAD DATA (DENGAN ERROR CHECKING) ---
+// Fungsi pembantu untuk load data agar lebih rapi
+function loadData(url, layer, layerName) {
+    $.getJSON(url, function(data) {
+        layer.addData(data);
+        layer.addTo(map); // Tampilkan langsung
+        console.log(`✅ Berhasil memuat: ${layerName}`);
+    }).fail(function(jqxhr, textStatus, error) {
+        console.error(`❌ GAGAL memuat ${layerName} di URL: ${url}`);
+        console.error(`Error: ${error}`);
+    });
+}
 
-// 2. Load Jalan Lingkungan
-$.getJSON("asset/Jalan_Lingkungan.geojson", function(data) {
-    jalanLingkunganLayer.addData(data);
-    jalanLingkunganLayer.addTo(map);
-});
-
-// 3. Load Persil Warga
-$.getJSON("asset/Persil_Warga.geojson", function(data) {
-    persilWargaLayer.addData(data);
-    persilWargaLayer.addTo(map);
-});
-
-// 4. Load Puskesmas (Perhatikan nama folder 'asset' bukan 'sset')
-$.getJSON("asset/Puskesmas.geojson", function(data) {
-    puskesmasLayer.addData(data);
-    puskesmasLayer.addTo(map);
-});
-
-// 5. Load Pemerintahan
-$.getJSON("asset/Pemerintahan.geojson", function(data) {
-    pemerintahanLayer.addData(data);
-    pemerintahanLayer.addTo(map);
-});
+// Panggil fungsi load data
+// Pastikan nama file di folder 'asset' SAMA PERSIS (Huruf besar/kecil berpengaruh di GitHub!)
+loadData("asset/Jalan_Arteri.geojson", jalanArteriLayer, "Jalan Arteri");
+loadData("asset/Jalan_Lingkungan.geojson", jalanLingkunganLayer, "Jalan Lingkungan");
+loadData("asset/Persil_Warga.geojson", persilWargaLayer, "Persil Warga");
+loadData("asset/Puskesmas.geojson", puskesmasLayer, "Puskesmas");
+loadData("asset/Pemerintahan.geojson", pemerintahanLayer, "Pemerintahan");
 
 
-// --- 5. CONTROLS (Layer Control & Fitur Lain) ---
-
+// --- 5. CONTROL LAYERS ---
 const baseMaps = {
-    "Peta Jalan": basemapOSM,
-    "Satelit Google": baseMapGoogle
+    "Peta Jalan (OSM)": basemapOSM,
+    "Satelit (Google)": baseMapGoogle
 };
 
 const overlayMaps = {
-    "<span style='color:red; font-weight:bold'>— Jalan Arteri</span>": jalanArteriLayer,
-    "<span style='color:blue'>- - Jalan Lingkungan</span>": jalanLingkunganLayer,
-    "<span style='background-color:yellow; opacity:0.5'>⬛</span> Persil Warga": persilWargaLayer,
-    "🏥 Puskesmas": puskesmasLayer,
-    "🏢 Pemerintahan": pemerintahanLayer
+    "Jalan Arteri (Merah)": jalanArteriLayer,
+    "Jalan Lingkungan (Biru)": jalanLingkunganLayer,
+    "Persil Warga (Kuning)": persilWargaLayer,
+    "Puskesmas (Titik Merah)": puskesmasLayer,
+    "Kantor Pemerintah (Pin Biru)": pemerintahanLayer
 };
 
-// Tambahkan Layer Control ke Peta
 L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
 
-// Skala Peta
-L.control.scale({imperial: false}).addTo(map);
+// Fitur Tambahan
+L.control.scale().addTo(map);
 
-// Tombol Home
+if (L.Control.Fullscreen) {
+    map.addControl(new L.Control.Fullscreen());
+}
+
+// Tombol Reset View
 const homeCoords = { lat: -1.265386, lng: 116.831200, zoom: 15 };
 L.easyButton('fa-solid fa-house', function(btn, map){
     map.setView([homeCoords.lat, homeCoords.lng], homeCoords.zoom);
 }, 'Reset Tampilan').addTo(map);
-
-// Tombol Lokasi Saya
-if (L.control.locate) {
-    L.control.locate({
-        position: 'topleft',
-        strings: { title: "Dimana saya?" }
-    }).addTo(map);
-}
